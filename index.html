@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>关于</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+
+<style>
+        header {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .header {
+            width: 100%;
+            height: 2.4rem;
+            font-size: 0.9rem;
+            color: #fff
+        }
+        .active{
+          color: red
+        }
+    </style>
+</head>
+
+<body>
+  <header class="header aui-bar aui-bar-nav" id="aui-header" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(59, 199, 204, 1) 0%, rgba(93, 215, 186, 1) 100%);">
+      <div class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+        <img class="img-box aui-iconfont aui-icon-left" id="imagebox" src="../../image/login_register/navigation_return.png" alt="" style="width: 0.65rem;height: 1.25rem">
+      </div>
+      <div class="aui-title">我的账单</div>
+  </header>
+  <div class="aui-tab" id="tab">
+        <div id="mytab_1" class="aui-tab-item aui-active" tapmode onclick="randomSwitchBtn(this,0)">全部</div>
+        <div id="mytab_2" class="aui-tab-item" tapmode onclick="randomSwitchBtn(this,1)">充值</div>
+        <div id="mytab_3" class="aui-tab-item" tapmode onclick="randomSwitchBtn(this,2)">消费</div>
+  </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript">
+apiready = function(){
+    var header = $api.byId('aui-header');
+    var headerH = $api.fixStatusBar(header);
+    var auitab = $api.byId('tab');
+    var auitabPos = $api.offset(auitab);
+    api.openFrameGroup ({
+        name: 'group',
+        rect:{
+          marginTop:headerH + auitabPos.h,
+          w:'auto'
+        },
+        scrollEnabled:true,
+        index:0,
+        frames:
+        [{
+            name: 'demo1',
+            url: 'demo1.html',
+            bounces:true,
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'demo2',
+            url: 'demo2.html',
+            bounces:true,
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        },{
+            name: 'demo3',
+            url: 'demo3.html',
+            bounces:true,
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        }]
+    }, function(ret, err){
+      var mytab = $api.byId('tab');
+          var mytabAct = $api.dom(mytab, '.aui-tab-item.aui-active');
+          $api.removeCls(mytabAct, 'aui-active');
+
+          var name = ret.name;
+          var index = ret.index;
+          if(index==0){
+              $api.addCls($api.byId('mytab_1'), 'aui-active');
+          }else if(index==1){
+              $api.addCls($api.byId('mytab_2'), 'aui-active');
+          }else if(index==2){
+              $api.addCls($api.byId('mytab_3'), 'aui-active');
+          }
+    })
+};
+
+
+function randomSwitchBtn(obj, index) {
+    var mytab = $api.byId('tab');
+    var mytabAct = $api.dom(mytab, '.aui-tab-item.aui-active');
+    $api.removeCls(mytabAct, 'aui-active');
+    $api.addCls(obj, 'aui-active');
+    api.setFrameGroupIndex({
+        name: 'group',
+        index: index,
+        scroll:true
+    });
+
+}
+function closeWin(){
+  api.closeWin();
+};
+
+</script>
+</html>
